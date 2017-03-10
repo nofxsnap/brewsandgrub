@@ -1,0 +1,25 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: brewsandgrub_development
+  username: adminbrews
+  host: localhost
+  pool: 30
+  timeout: 15000
+
+test:
+  adapter: postgresql
+  encoding: utf8
+  database: brewsandgrub_test
+  username: adminbrews
+  host: localhost
+
+staging:
+  adapter: postgresql
+  encoding: utf8
+  database: brewsandgrub_production
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: brewsandgrub_production
