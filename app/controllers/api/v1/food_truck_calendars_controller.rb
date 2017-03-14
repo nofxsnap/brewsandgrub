@@ -1,4 +1,4 @@
-class FoodTruckCalendarsController < ApplicationController
+class Api::V1::FoodTruckCalendarsController < ApplicationController
   before_action :set_food_truck_calendar, only: [:show, :update, :destroy]
 
   # GET /food_truck_calendars

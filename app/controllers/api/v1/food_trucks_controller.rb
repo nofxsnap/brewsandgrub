@@ -1,4 +1,4 @@
-class FoodTrucksController < ApplicationController
+class Api::V1::FoodTrucksController < ApplicationController
   before_action :set_food_truck, only: [:show, :update, :destroy]
 
   # GET /food_trucks
