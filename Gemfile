@@ -13,7 +13,6 @@ gem 'puma', '~> 3.0'
 
 gem 'pg'
 gem 'money-rails'
-gem 'foreman', '~> 0.82.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
@@ -41,6 +40,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'figaro'
   gem 'bullet'
+
+  gem 'foreman', '~> 0.82.0'
 end
 
 group :development do
