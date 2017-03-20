@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import SelectedBreweries from './selectedBreweries';
+import Search from './search';
 
 class App extends Component {
+  state = {
+    selectedBreweries: [],
+  }
+
   render() {
+    const { selectedBreweries } = this.state;
+
     return (
       <div className="App">
         <div className="App-header">
@@ -15,6 +23,14 @@ class App extends Component {
           <br />
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <SelectedBreweries
+            breweries={selectedBreweries}
+            onBreweryClick={this.removeBreweryItem}
+          />
+        <Search
+            itemType="breweries"
+            onItemClick={this.addItem}
+          />
       </div>
     );
   }
