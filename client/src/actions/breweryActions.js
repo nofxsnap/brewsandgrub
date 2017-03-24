@@ -11,6 +11,20 @@ export function loadBreweries() {
   };
 }
 
+export function updateBrewery(brewery) {
+  return function (dispatch) {
+    return breweriesApi.updateBrewery(brewery).then(responseBrewery => {
+      dispatch(updateBrewerySuccess(responseBrewery));
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
 export function loadBreweriesSuccess(breweries) {
   return {type: types.LOAD_BREWERIES_SUCCESS, breweries};
+}
+
+export function updateBrewerySuccess(brewery) {
+  return {type: types.UPDATE_BREWERY_SUCCESS, brewery}
 }

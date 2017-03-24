@@ -21,7 +21,7 @@ class Api::V1::RatingsController < ApplicationController
   # PUT /ratings/:id
   def update
     @rating.update(rating_params)
-    head :no_content
+    json_response(@rating)
   end
 
   # DELETE /ratings/:id

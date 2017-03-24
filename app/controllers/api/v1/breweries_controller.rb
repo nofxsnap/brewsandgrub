@@ -21,7 +21,7 @@ class Api::V1::BreweriesController < ApplicationController
   # PUT /breweries/:id
   def update
     @brewery.update(brewery_params)
-    head :no_content
+    json_response(@brewery)
   end
 
   # DELETE /breweries/:id
@@ -34,7 +34,7 @@ class Api::V1::BreweriesController < ApplicationController
 
   def brewery_params
     # whitelist params
-    params.permit(:name, :contact_id, :address_street, :address_city, :address_state,
+    params.require(:brewery).permit(:name, :contact_id, :address_street, :address_city, :address_state,
                   :address_zip, :phone, :email, :website, :logo, :yelp_url, :description)
   end
 

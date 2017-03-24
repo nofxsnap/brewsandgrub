@@ -21,7 +21,7 @@ class Api::V1::FoodTrucksController < ApplicationController
   # PUT /food_trucks/:id
   def update
     @food_truck.update(food_truck_params)
-    head :no_content
+    json_response(@food_truck)
   end
 
   # DELETE /food_trucks/:id

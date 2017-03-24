@@ -21,7 +21,7 @@ class Api::V1::MenusController < ApplicationController
   # PUT /menus/:id
   def update
     @menu.update(menu_params)
-    head :no_content
+    json_response(@menu)
   end
 
   # DELETE /menus/:id

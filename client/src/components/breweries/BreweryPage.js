@@ -1,14 +1,66 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as breweryActions from '../../actions/breweryActions';
 import FoodTruckCalendarList from './FoodTruckCalendarList';
+import BreweryForm from './BreweryForm'
 
 class BreweryPage extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      saving: false,
+      isEditing: false,
+      brewery: this.props.brewery,
+      breweryFoodTruckCalendars: this.props.breweryFoodTruckCalendars
+    };
+    this.updateBreweryState = this.updateBreweryState.bind(this);
+    this.saveBrewery = this.saveBrewery.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.brewery.id != nextProps.brewery.id) {
+      this.setState({brewery: nextProps.brewery});
+    }
+    this.setState({saving: false, isEditing: false});
+  }
+
+  updateBreweryState(event) {
+    const field = event.target.name;
+    const brewery = this.state.brewery;
+    brewery[field] = event.target.value;
+    return this.setState({brewery: brewery});
+  }
+
+  saveBrewery(event) {
+    event.preventDefault();
+    this.setState({saving: true});
+    this.props.actions.updateBrewery(this.state.brewery);
+  }
+
+  toggleEdit() {
+    this.setState({isEditing: !this.state.isEditing})
+  }
+
   render() {
+    if (this.state.isEditing) {
+      return (
+      <div>
+        <h1>edit brewery</h1>
+        <BreweryForm
+          brewery={this.state.brewery}
+          onSave={this.saveBrewery}
+          onChange={this.updateBreweryState}/>
+      </div>
+      )
+    }
     return (
       <div className="col-md-8 col-md-offset-2">
         <h1>{this.props.brewery.name}</h1>
         <p>Description: {this.props.brewery.description}</p>
         <FoodTruckCalendarList foodTruckCalendars={this.props.breweryFoodTruckCalendars} />
+        <button onClick={this.toggleEdit}>edit</button>
       </div>
     );
   }
@@ -16,7 +68,8 @@ class BreweryPage extends React.Component {
 
 BreweryPage.propTypes = {
   brewery: PropTypes.object.isRequired,
-  breweryFoodTruckCalendars: PropTypes.array.isRequired
+  breweryFoodTruckCalendars: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 function getBreweryById(breweries, id) {
@@ -46,4 +99,10 @@ function mapStateToProps(state, ownProps) {
   return {brewery: brewery, breweryFoodTruckCalendars: breweryFoodTruckCalendars};
 }
 
-export default connect(mapStateToProps)(BreweryPage);
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(breweryActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BreweryPage);
