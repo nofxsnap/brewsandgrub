@@ -15,6 +15,8 @@ Rails.application.routes.draw do
         resources :ratings
       end
 
+      resources :food_truck_calendars
+
       resources :contacts
     end
   end
