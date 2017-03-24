@@ -6,11 +6,13 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 import {loadBreweries} from './actions/breweryActions';
+import {loadFoodTrucks} from './actions/foodTruckActions';
 import {loadFoodTruckCalendars} from './actions/foodTruckCalendarActions';
 
 const store = configureStore();
 
 store.dispatch(loadBreweries());
+store.dispatch(loadFoodTrucks());
 store.dispatch(loadFoodTruckCalendars());
 
 render(
