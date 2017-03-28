@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import * as foodTruckActions from '../../actions/foodTruckActions';
 import FoodTruckList from './FoodTruckList';
+import {Link} from 'react-router';
 
 class FoodTrucksPage extends React.Component {
   render() {
@@ -15,11 +16,15 @@ class FoodTrucksPage extends React.Component {
         <div className="col-md-8">
           {this.props.children}
         </div>
+        <div>
+          <Link to={'/foodTrucks/new'} className="btn btn-primary">
+            + Food Truck
+          </Link>
+        </div>
       </div>
     );
   }
 }
-
 
 FoodTrucksPage.propTypes = {
   foodTrucks: PropTypes.array.isRequired

@@ -6,6 +6,7 @@ import BreweriesPage from './components/breweries/BreweriesPage';
 import BreweryPage from './components/breweries/BreweryPage';
 import FoodTrucksPage from './components/foodTrucks/FoodTrucksPage';
 import FoodTruckPage from './components/foodTrucks/FoodTruckPage';
+import NewFoodTruckPage from './components/foodTrucks/NewFoodTruckPage';
 
 export default (
   <Route path="/" component={App}>
@@ -14,6 +15,7 @@ export default (
       <Route path="/breweries/:id" component={BreweryPage} />
     </Route>
     <Route path="/foodTrucks" component={FoodTrucksPage} >
+      <Route path="/foodTrucks/new" component={NewFoodTruckPage} />
       <Route path="/foodTrucks/:id" component={FoodTruckPage} />
     </Route>
   </Route>

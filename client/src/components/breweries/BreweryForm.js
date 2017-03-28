@@ -26,7 +26,7 @@ class BreweryForm extends React.Component {
             onClick={this.props.onSave}/>
         </form>
       </div>
-  );
+    );
   }
 }
 
