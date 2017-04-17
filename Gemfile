@@ -42,6 +42,8 @@ group :development, :test do
   gem 'bullet'
 
   gem 'foreman', '~> 0.82.0'
+
+  gem 'rails-erd'
 end
 
 group :development do
