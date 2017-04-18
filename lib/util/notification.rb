@@ -7,6 +7,7 @@ class Notification
   end
 
   def add_notification(message)
+    Rails.logger.info 'Notification::Adding #{message} to notification list.'
     @notification_list << message
   end
 
@@ -20,12 +21,14 @@ class Notification
     puts @notification_list.join(' ')
   end
 
-  def get_last_notification
-    @notification_list.pop
-  end
-
   def any_notifications?
-    !@notification_list.empty?
+    if @notification_list.empty?
+      Rails.logger.info 'Notification::No notifications in the list.'
+      false
+    else
+      Rails.logger.info 'Notification::The list has notifications.'
+      true
+    end
   end
 
 end
