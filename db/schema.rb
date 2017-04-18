@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310181805) do
+ActiveRecord::Schema.define(version: 20170417175643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,9 +29,13 @@ ActiveRecord::Schema.define(version: 20170310181805) do
     t.string   "logo"
     t.string   "yelp_url"
     t.text     "description"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "remote_schedule_endpoint"
+    t.boolean  "remote_endpoint_requires_date"
+    t.integer  "food_truck_id"
     t.index ["contact_id"], name: "index_breweries_on_contact_id", using: :btree
+    t.index ["food_truck_id"], name: "index_breweries_on_food_truck_id", using: :btree
     t.index ["menu_id"], name: "index_breweries_on_menu_id", using: :btree
   end
 
