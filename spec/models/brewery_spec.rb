@@ -8,4 +8,10 @@ RSpec.describe Brewery, type: :model do
       expect(ltd.name).to eq("Living the Dream")
     end
   end
+
+  describe "#get_todays_food_truck_from_file" do
+    it "should get food truck for the day" do
+      notification = BreweryScheduleUpdater.update_all_breweries
+    end
+  end
 end
