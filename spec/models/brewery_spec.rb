@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Brewery, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe "#Test_FactoryGirl_Setup" do
+    it "should demonstrate a factory girl fabricated model" do
+      ltd = create(:living_the_dream)
+      expect(ltd.name).to eq("Living the Dream")
+    end
+  end
 end
