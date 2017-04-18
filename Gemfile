@@ -44,6 +44,8 @@ group :development, :test do
   gem 'foreman', '~> 0.82.0'
 
   gem 'rails-erd'
+
+  gem 'factory_girl_rails'
 end
 
 group :development do
