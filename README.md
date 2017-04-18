@@ -24,4 +24,14 @@ To auto-start PG run these
   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 
 You can also install the Postgres client if you're running a Mac
-  http://postgresapp.com/
+http://postgresapp.com/
+
+There is an entity-relationship diagram that provides a visualization of the model.
+  docs/entity-relationship-diagram.pdf
+
+You can generate a new one at any time.  If you don't have it already you'll have to install Graphviz:
+  brew install graphviz           # Homebrew on Mac OS X
+  sudo apt-get install graphviz   # Debian and Ubuntu
+
+Then run the following rake task:
+  rake erd filename='docs/entity-relationship-diagram'
