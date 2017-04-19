@@ -15,15 +15,16 @@ RSpec.describe FoodTruckUpdater do
     it "should assign living the dream the taco town truck" do
       food_truck_name = @food_truck.name
 
-      FoodTruckUpdater.update_brewery_with_truck(@brewery, food_truck_name, @notifications)
+      @notifications.add_notifications FoodTruckUpdater.update_brewery_with_truck(@brewery, food_truck_name)
       expect(@brewery.food_truck).to eq(@food_truck)
+      binding.pry
       expect(@notifications.any_notifications?).to eq(false)
     end
 
     it "should assign living the dream a new food truck" do
       food_truck_name = "wally world of wangs and thangs"
 
-      FoodTruckUpdater.update_brewery_with_truck(@brewery, food_truck_name, @notifications)
+      @notifications.add_notifications FoodTruckUpdater.update_brewery_with_truck(@brewery, food_truck_name)
 
       # Assume that the latest created food truck will be the new one
       new_food_truck = FoodTruck.order("created_at").last

@@ -25,6 +25,12 @@ class Notification
     return @notification_list.size
   end
 
+  def add_notifications(more_notifications)
+    more_notifications.get_notifications.each do |notification|
+      @notification_list << notification
+    end
+  end
+
   def any_notifications?
     if @notification_list.empty?
       Rails.logger.info 'Notification::No notifications in the list.'

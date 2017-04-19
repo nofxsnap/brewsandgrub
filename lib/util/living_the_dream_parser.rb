@@ -3,7 +3,9 @@ require 'open-uri'
 class LivingTheDreamParser
 @tag = "LivingTheDreamParser"
 
-  def self.get_todays_food_truck(brewery, notifications)
+  def self.get_food_truck_for_date(brewery, date)
+    notifications = Notification.new
+
     Rails.logger.info '#{@tag}:: starting get_todays_food_truck'
 
     # Get the schedule from the given endpoint
@@ -17,7 +19,7 @@ class LivingTheDreamParser
 
       # Living the Dream
       if unformatted_date_substr =~ /\|\|MONTH-YYYY\|\|/
-        endpoint.gsub!(/\|\|MONTH-YYYY\|\|/, Date.today.strftime("%B") + "-" + Date.today.year.to_s)
+        endpoint.gsub!(/\|\|MONTH-YYYY\|\|/, date.strftime("%B") + "-" + date.year.to_s)
       end
 
       Rails.logger.info '#{tag}:: Determined this is what the endpoint should look like: #{endpoint}'
@@ -25,7 +27,7 @@ class LivingTheDreamParser
 
     # Go get the thing
     # The pattern we're looking for is today:
-    food_truck_pattern = "<h1><a href=\"/events/#{Date.today.strftime("%Y/%-m/%-d/")}"
+    food_truck_pattern = "<h1><a href=\"/events/#{date.strftime("%Y/%-m/%-d/")}"
     todays_schedule = Array.new
 
     begin
@@ -53,8 +55,11 @@ class LivingTheDreamParser
     # <h1><a href="/events/2017/4/18/the-wing-wagon-grill">The Wing Wagon Grill</a></h1>
     # extract between ">.*</a"
     food_truck_name = food_truck_name.scan(/(?<=\">)(.*)(?=<\/a)/).last.first
-    notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name, notifications)
+
+    # Returns updated notifications
+    notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
 
     notifications
   end
+
 end

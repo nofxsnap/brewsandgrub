@@ -24,8 +24,6 @@ class BreweryScheduleUpdater
         notifications = LivingTheDreamParser.get_todays_food_truck(brewery, notfications)
       end
 
-
-
     end
 
   end
