@@ -21,6 +21,10 @@ class Notification
     puts @notification_list.join(' ')
   end
 
+  def size
+    return @notification_list.size
+  end
+
   def any_notifications?
     if @notification_list.empty?
       Rails.logger.info 'Notification::No notifications in the list.'
