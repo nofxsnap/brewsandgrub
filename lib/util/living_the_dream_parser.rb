@@ -28,7 +28,12 @@ class LivingTheDreamParser
     # Go get the thing
     # The pattern we're looking for is today:
     food_truck_pattern = "<h1><a href=\"/events/#{date.strftime("%Y/%-m/%-d/")}"
-    todays_schedule = Array.new
+
+    # Tuesday, April 18, 2017,  4:00pm &ndash;  8:00pm
+    food_truck_hours_pattern = "#{date.strftime("%A, %B %-d, %Y,")}"
+
+    todays_schedule        = Array.new
+    todays_scheduled_hours = Array.new
 
     begin
       open(endpoint) { |lines|
@@ -36,6 +41,8 @@ class LivingTheDreamParser
           # TODO:  should we store the pattern we're looking for in the brewery table
           if line =~ /#{food_truck_pattern}/
             todays_schedule << line
+          elsif line =~ /#{food_truck_hours_pattern}/
+            todays_scheduled_hours << line
           end
         }
       }
@@ -48,8 +55,10 @@ class LivingTheDreamParser
     if todays_schedule.size > 1
       # TODO:  need something better than 'generally the event is listed first'
       food_truck_name = todays_schedule.last
+      food_truck_schedule = todays_scheduled_hours.last
     else
       food_truck_name = todays_schedule.first
+      food_truck_schedule = todays_scheduled_hours.first
     end
 
     # <h1><a href="/events/2017/4/18/the-wing-wagon-grill">The Wing Wagon Grill</a></h1>
@@ -58,6 +67,11 @@ class LivingTheDreamParser
 
     # Returns updated notifications
     notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
+
+    # Get hours    
+    split_hours_string = food_truck_schedule.split
+    hours_string       = "#{split_hours_string[4]}-#{split_hours_string[6]}"
+    brewery.update_attribute(:event_hours, hours_string)
 
     notifications
   end

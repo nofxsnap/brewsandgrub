@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'date'
 
 RSpec.describe LivingTheDreamParser do
+  SPEC_BREWERY_EVENT_HOURS = "4:00pm-8:00pm"
 
   before(:all) do
     @brewery = create(:living_the_dream)
@@ -17,8 +18,6 @@ RSpec.describe LivingTheDreamParser do
 
   describe '#test_the things' do
     it "should get food truck for the day and create a new food truck" do
-      binding.pry
-
       today = Date.new(2017,4,17)
 
       @notifications.add_notifications LivingTheDreamParser.get_food_truck_for_date(@brewery, today)
@@ -31,11 +30,11 @@ RSpec.describe LivingTheDreamParser do
       food_truck_id = @notification.split(/:\s/).last
       food_truck = FoodTruck.find(food_truck_id)
       expect(food_truck).not_to be(nil)
+
+      expect(@brewery.event_hours).to eq(SPEC_BREWERY_EVENT_HOURS)
     end
 
     it "should get food truck for the day and assign ref to existing food truck" do
-      binding.pry
-
       today = Date.new(2017,4,19)
 
       @notifications.add_notifications LivingTheDreamParser.get_food_truck_for_date(@brewery, today)
@@ -43,6 +42,8 @@ RSpec.describe LivingTheDreamParser do
       expect(@notifications.size).to be(0)
 
       expect(@brewery.food_truck.id).to eq(@food_truck.id)
+
+      expect(@brewery.event_hours).to eq(SPEC_BREWERY_EVENT_HOURS)
     end
   end
 end

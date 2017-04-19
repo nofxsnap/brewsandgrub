@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170417175643) do
+ActiveRecord::Schema.define(version: 20170419183551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20170417175643) do
     t.datetime "updated_at",                    null: false
     t.string   "remote_schedule_endpoint"
     t.boolean  "remote_endpoint_requires_date"
+    t.string   "event_hours"
     t.index ["contact_id"], name: "index_breweries_on_contact_id", using: :btree
     t.index ["menu_id"], name: "index_breweries_on_menu_id", using: :btree
   end
