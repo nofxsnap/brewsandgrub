@@ -33,9 +33,7 @@ ActiveRecord::Schema.define(version: 20170417175643) do
     t.datetime "updated_at",                    null: false
     t.string   "remote_schedule_endpoint"
     t.boolean  "remote_endpoint_requires_date"
-    t.integer  "food_truck_id"
     t.index ["contact_id"], name: "index_breweries_on_contact_id", using: :btree
-    t.index ["food_truck_id"], name: "index_breweries_on_food_truck_id", using: :btree
     t.index ["menu_id"], name: "index_breweries_on_menu_id", using: :btree
   end
 
