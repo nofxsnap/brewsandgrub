@@ -47,28 +47,13 @@ class LivingTheDreamParser
       # TODO:  need something better than 'generally the event is listed first'
       food_truck_name = todays_schedule.last
     else
-      notifications.add_notification('When parsing the schedule document, we found no matches for today.')
+      food_truck_name = todays_schedule.first
     end
 
-    # Find the food truck with this name, if it's not there make a new row and flag
-    # that it needs to be updated
     # <h1><a href="/events/2017/4/18/the-wing-wagon-grill">The Wing Wagon Grill</a></h1>
     # extract between ">.*</a"
     food_truck_name = food_truck_name.scan(/(?<=\">)(.*)(?=<\/a)/).last.first
-    food_truck = FoodTruck.find_by_name(food_truck_name)
-
-    unless food_truck.blank?
-      Rails.logger.info "#{@tag}:: #{brewery.name} will have #{food_truck_name} today."
-      brewery.food_truck = food_truck
-      brewery.save!
-    else
-      # Create a new food truck
-      Rails.logger.info "#{@tag}:: created a new food truck #{food_truck_name}"
-      new_food_truck = FoodTruck.create(name: food_truck_name)
-      new_food_truck.save!
-
-      notifications.add_notification("New Food Truck!  Name:  #{food_truck_name}  id: #{new_food_truck.id}")
-    end
+    notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name, notifications)
 
     notifications
   end
