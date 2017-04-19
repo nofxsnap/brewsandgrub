@@ -10,8 +10,7 @@ FactoryGirl.define do
     email "info@livingthedreambrewing.com"
     phone "(303) 284-9585"
     website "http://livingthedreambrewing.com"
-    yelp_url "http://whydopeopleuseyelp.com"
-    food_truck_id nil
+    yelp_url "http://whydopeopleuseyelp.com"    
 
     remote_schedule_endpoint "http://livingthedreambrewing.com/events/?view=calendar&month=||MONTH-YYYY||"
     remote_endpoint_requires_date true
