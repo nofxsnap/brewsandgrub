@@ -24,7 +24,6 @@ class LivingTheDreamParser
     end
 
     # Go get the thing
-
     # The pattern we're looking for is today:
     food_truck_pattern = "<h1><a href=\"/events/#{Date.today.strftime("%Y/%-m/%-d/")}"
     todays_schedule = Array.new
@@ -32,14 +31,14 @@ class LivingTheDreamParser
     begin
       open(endpoint) { |lines|
         lines.each_line{ |line|
-          # TODO:  figure out how to store the pattern we're looking for
+          # TODO:  should we store the pattern we're looking for in the brewery table
           if line =~ /#{food_truck_pattern}/
             todays_schedule << line
           end
         }
       }
     rescue Exception => derp
-      Rails.logger.fatal '#{tag}:: #{derp} happened, error getting schedule data'
+      Rails.logger.error '#{tag}:: #{derp} happened, error getting schedule data'
       notifications.add_notification('Exception when performing GET on #{endpoint}')
     end
 

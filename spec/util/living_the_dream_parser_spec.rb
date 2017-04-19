@@ -16,8 +16,7 @@ RSpec.describe LivingTheDreamParser do
 
       notification = notifications.get_notifications.first
       expect(notification).to start_with("New Food Truck!")
-
-      binding.pry
+      
       food_truck_id = notification.split(/:\s/).last
       food_truck = FoodTruck.find(food_truck_id)
       expect(food_truck).not_to be(nil)
