@@ -17,8 +17,7 @@ class FoodTruckUpdater
       end
 
       Rails.logger.info "#{@tag}:: #{brewery.name} will have #{food_truck_name} today."
-      brewery.food_truck = food_truck
-      brewery.save!
+      brewery.update_attribute(:food_truck, food_truck)
 
       notifications
   end

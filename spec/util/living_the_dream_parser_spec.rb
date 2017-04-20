@@ -41,9 +41,15 @@ RSpec.describe LivingTheDreamParser do
 
       expect(@notifications.size).to be(0)
 
-      expect(@brewery.food_truck.id).to eq(@food_truck.id)
+      expect(@brewery.food_truck).to eq(@food_truck)
 
       expect(@brewery.event_hours).to eq(SPEC_BREWERY_EVENT_HOURS)
     end
   end
+
+
+    after(:all) do
+      FoodTruck.all.each { |x| x.destroy! }
+      @brewery.destroy!
+    end
 end

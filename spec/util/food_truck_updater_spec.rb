@@ -17,7 +17,6 @@ RSpec.describe FoodTruckUpdater do
 
       @notifications.add_notifications FoodTruckUpdater.update_brewery_with_truck(@brewery, food_truck_name)
       expect(@brewery.food_truck).to eq(@food_truck)
-      binding.pry
       expect(@notifications.any_notifications?).to eq(false)
     end
 
@@ -32,5 +31,10 @@ RSpec.describe FoodTruckUpdater do
       expect(@brewery.food_truck).to eq(new_food_truck)
       expect(@notifications.any_notifications?).to eq(true)
     end
+  end
+
+  after(:all) do
+    FoodTruck.all.each { |x| x.destroy! }
+    @brewery.destroy!
   end
 end
