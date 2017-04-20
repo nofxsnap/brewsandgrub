@@ -4,6 +4,8 @@ RSpec.describe FoodTruckUpdater do
 
   before(:all) do
     @brewery = create(:living_the_dream)
+    @brewery.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd?view=calendar&month=||MONTH-YYYY||")
+
     @food_truck = create(:taco_town_truck)
   end
 

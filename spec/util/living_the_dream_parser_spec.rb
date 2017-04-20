@@ -13,7 +13,7 @@ RSpec.describe LivingTheDreamParser do
     @notifications = Notification.new
 
     # Use local copy of april 2017 schedule for testing
-    @brewery.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd.htm")
+    @brewery.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd?view=calendar&month=||MONTH-YYYY||")
   end
 
   describe '#test_the things' do

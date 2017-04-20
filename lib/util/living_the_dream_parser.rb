@@ -9,20 +9,18 @@ class LivingTheDreamParser
     Rails.logger.info '#{@tag}:: starting get_todays_food_truck'
 
     # Get the schedule from the given endpoint
-    endpoint = brewery.remote_schedule_endpoint
     Rails.logger.info '#{@tag}:: endpoint for this brewery = #{endpoint}'
 
     if brewery.remote_endpoint_requires_date
-      # Date url formatting should be between pipes ||<pattern>||
-      unformatted_date_substr = endpoint.scan(/\|\|*.+\|\|/).last
-      formatted_date_substr = String.new
+      endpoint = DatePatternGenerator.generate_date_string_for_brewery(brewery, date)
+    end
 
-      # Living the Dream
-      if unformatted_date_substr =~ /\|\|MONTH-YYYY\|\|/
-        endpoint.gsub!(/\|\|MONTH-YYYY\|\|/, date.strftime("%B") + "-" + date.year.to_s)
-      end
+    if endpoint.blank?
+      error = "#{@tag}:: Could not determine correct endpoint to retrieve schedule document from #{brewery.name}"
+      Rails.logger.error error
+      notifications.add_notification error
 
-      Rails.logger.info '#{tag}:: Determined this is what the endpoint should look like: #{endpoint}'
+      return notifications  # Exit this method, we can't get the schedule data.
     end
 
     # Go get the thing
@@ -68,7 +66,7 @@ class LivingTheDreamParser
     # Returns updated notifications
     notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
 
-    # Get hours    
+    # Get hours
     split_hours_string = food_truck_schedule.split
     hours_string       = "#{split_hours_string[4]}-#{split_hours_string[6]}"
     brewery.update_attribute(:event_hours, hours_string)

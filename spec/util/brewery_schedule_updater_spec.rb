@@ -18,7 +18,7 @@ RSpec.describe BreweryScheduleUpdater do
     it "should get existing food truck for the given day" do
       today = Date.new(2017,4,19)
 
-      @brewery.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd.htm")
+      @brewery.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd?view=calendar&month=||MONTH-YYYY||")
 
       @notifications.add_notifications BreweryScheduleUpdater.update_all_breweries(today)
 
