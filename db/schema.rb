@@ -69,6 +69,8 @@ ActiveRecord::Schema.define(version: 20170419183551) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "brewery_id"
+    t.index ["brewery_id"], name: "index_food_trucks_on_brewery_id", using: :btree
     t.index ["contact_id"], name: "index_food_trucks_on_contact_id", using: :btree
     t.index ["menu_id"], name: "index_food_trucks_on_menu_id", using: :btree
   end
@@ -106,6 +108,7 @@ ActiveRecord::Schema.define(version: 20170419183551) do
   add_foreign_key "breweries", "menus"
   add_foreign_key "food_truck_calendars", "breweries"
   add_foreign_key "food_truck_calendars", "food_trucks"
+  add_foreign_key "food_trucks", "breweries"
   add_foreign_key "food_trucks", "contacts"
   add_foreign_key "food_trucks", "menus"
   add_foreign_key "menu_items", "menus"
