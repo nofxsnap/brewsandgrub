@@ -22,8 +22,6 @@ RSpec.describe BreweryScheduleUpdater do
 
       @notifications.add_notifications BreweryScheduleUpdater.update_all_breweries(today)
 
-      binding.pry
-
       @brewery.reload
       @food_truck.reload
 
@@ -38,8 +36,6 @@ RSpec.describe BreweryScheduleUpdater do
       @notifications.add_notifications BreweryScheduleUpdater.update_all_breweries(today)
 
       @brewery.reload
-
-      binding.pry
 
       new_food_truck = FoodTruck.order("created_at").last
 
