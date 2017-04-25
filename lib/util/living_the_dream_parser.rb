@@ -1,7 +1,9 @@
-require 'open-uri'
+class LivingTheDreamParser < GenericParser
+  @tag = "LivingTheDreamParser"
 
-class LivingTheDreamParser
-@tag = "LivingTheDreamParser"
+  def self.fetch_remote_schedule(endpoint, truckpattern, schedulepattern, notifications)
+    super
+  end
 
   def self.get_food_truck_for_date(brewery, date)
     notifications = Notification.new
@@ -33,21 +35,7 @@ class LivingTheDreamParser
     todays_schedule        = Array.new
     todays_scheduled_hours = Array.new
 
-    begin
-      open(endpoint) { |lines|
-        lines.each_line{ |line|
-          # TODO:  should we store the pattern we're looking for in the brewery table
-          if line =~ /#{food_truck_pattern}/
-            todays_schedule << line
-          elsif line =~ /#{food_truck_hours_pattern}/
-            todays_scheduled_hours << line
-          end
-        }
-      }
-    rescue Exception => derp
-      Rails.logger.error '#{tag}:: #{derp} happened, error getting schedule data'
-      notifications.add_notification('Exception when performing GET on #{endpoint}')
-    end
+    notifications, todays_schedule, todays_scheduled_hours = fetch_remote_schedule(endpoint, food_truck_pattern, food_truck_hours_pattern, notifications)
 
     # Sometimes the schedule has an event AND a food truck.
     if todays_schedule.size > 1

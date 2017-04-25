@@ -1,7 +1,10 @@
-require 'open-uri'
+class GristParser < GenericParser
 
-class GristParser
   @tag = "GristParser"
+
+  def self.fetch_remote_schedule(endpoint, truckpattern, schedulepattern, notifications)
+    super
+  end
 
   def self.get_food_truck_for_date(brewery, date)
     notifications = Notification.new
@@ -21,31 +24,23 @@ class GristParser
       notifications.add_notification error
     end
 
-    # Go get the schedule data from the file
-    # Grist pattern is:  <h2>Rolling Italian Food Truck</h2>
-    food_truck_pattern       = "<h2>" # God this sucks
-    food_truck_hours_pattern = "<strong>" # FFS
+    # TODO: store the parse keywords in the model?
+    # events/trucks are bounded in <h2>
+    # schedule is bounded in <strong>
+    notifications, todays_schedule, todays_scheduled_hours = fetch_remote_schedule(endpoint, "<h2>", "<strong>", notifications)
 
-    todays_schedule        = Array.new
-    todays_scheduled_hours = Array.new
-
-    # Grist has crappy schedule data in terms of times.
-    # TODO:  this pattern of endpoint extraction could be extracted into its own code,
-    # maybe a parent parser
-    begin
-      open(endpoint) { |lines|
-        lines.each_line{ |line|
-          if line=~ /#{food_truck_pattern}/
-            todays_schedule << line
-          elsif line =~ /#{food_truck_hours_pattern}/
-            todays_scheduled_hours << line
-          end
-        }
-      }
-    rescue Exception => onoes
-      Rails.logger.error "#{@tag}:: #{onoes.message} happened, error getting schedule data"
-      notifications.add_notification "Exception when performing GET on #{endpoint}"
+    if todays_schedule.blank?
+      error = "#{@tag}:: did not get truck name data back from #{endpoint} for #{brewery.name}"
+      notifications.add_notification error
+      Rails.logger.error error
       return notifications
+    end
+
+    if todays_scheduled_hours.blank?
+      error = "#{@tag}:: did not get truck schedule data back from #{endpoint} for #{brewery.name}"
+      notifications.add_notification error
+
+      # TODO:  This isn't fatal
     end
 
     food_truck_name     = String.new
