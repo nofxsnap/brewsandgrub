@@ -30,7 +30,10 @@ FactoryGirl.define do
     website "http://www.gristbrewingcompany.com"
     yelp_url "http://wtfyelpwhy.cn"
 
-    remote_schedule_endpoint "https://www.gristbrewingcompany.com/event-calendar/"
-    remote_endpoint_requires_date false
+    remote_schedule_endpoint "https://www.gristbrewingcompany.com/events/?date=||M/D/YYYY||"
+    remote_endpoint_requires_date true
+
+    schedule_scan_pattern '\|\|*.+\|\|'
+    schedule_gsub_pattern '\|\|M\/D\/YYYY\|\|'
   end
 end

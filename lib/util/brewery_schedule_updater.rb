@@ -20,8 +20,10 @@ class BreweryScheduleUpdater
 
       # Send it to the thing based on the brewery name (custom things for each is lame)
 
-      if brewery.name == 'Living the Dream'
-        notifications.add_notifications LivingTheDreamParser.get_food_truck_for_date(brewery, today)        
+      if brewery.name.downcase    == 'Living the Dream'.downcase
+        notifications.add_notifications LivingTheDreamParser.get_food_truck_for_date(brewery, today)
+      elsif brewery.name.downcase == 'Grist Brewing Company'.downcase
+        notifications.add_notifications GristParser.get_food_truck_for_date(brewery, today)
       end
 
     end

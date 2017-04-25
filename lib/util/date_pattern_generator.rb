@@ -5,13 +5,20 @@ class DatePatternGenerator
     brewery_endpoint = brewery.remote_schedule_endpoint
     full_endpoint = String.new
 
+    # Scan the endpoint for the pattern
     regex = Regexp.new brewery.schedule_scan_pattern
     unformatted_date_substr = brewery_endpoint.scan(regex).last
 
+    # Regex to do find/replace with
+    gsub_regex = Regexp.new brewery.schedule_gsub_pattern
+
     if brewery.name.downcase == "Living The Dream".downcase
-      regex = Regexp.new brewery.schedule_gsub_pattern
-      if unformatted_date_substr =~ regex
-        full_endpoint = brewery_endpoint.gsub(regex, date.strftime("%B") + "-" + date.year.to_s)
+      if unformatted_date_substr =~ gsub_regex
+        full_endpoint = brewery_endpoint.gsub(gsub_regex, date.strftime("%B") + "-" + date.year.to_s)
+      end
+    elsif brewery.name.downcase == "Grist Brewing Company".downcase
+      if unformatted_date_substr =~ gsub_regex
+        full_endpoint = brewery_endpoint.gsub(gsub_regex, date.strftime("%-m/%-d/%Y"))
       end
     end
 
