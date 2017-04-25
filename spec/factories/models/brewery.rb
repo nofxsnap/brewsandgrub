@@ -11,6 +11,7 @@ FactoryGirl.define do
     phone "(303) 284-9585"
     website "http://livingthedreambrewing.com"
     yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
 
     remote_schedule_endpoint "http://livingthedreambrewing.com/events/?view=calendar&month=||MONTH-YYYY||"
     remote_endpoint_requires_date true
@@ -29,6 +30,7 @@ FactoryGirl.define do
     phone "(720) 360-4782"
     website "http://www.gristbrewingcompany.com"
     yelp_url "http://wtfyelpwhy.cn"
+    is_restaurant false
 
     remote_schedule_endpoint "https://www.gristbrewingcompany.com/events/?date=||M/D/YYYY||"
     remote_endpoint_requires_date true

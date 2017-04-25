@@ -2,8 +2,7 @@ class BreweryScheduleUpdater
   @tag = 'BreweryScheduleUpdater'
 
   def self.update_all_breweries(today)
-    Rails.logger.info '#{@tag}::Starting job to update all breweries with today\'s food truck offerings.'
-
+    Rails.logger.info "#{@tag}::Starting job to update all breweries with today\'s food truck offerings."
     # Collect any notifications about errors with data into a single container
     notifications = Notification.new
 
@@ -12,8 +11,13 @@ class BreweryScheduleUpdater
 
     breweries.each do |brewery|
       if (Rails.env.development?)
-        Rails.logger.info '#{@tag}:: #{brewery.id}\t#{brewery.name}\t#{brewery.remote_schedule_endpoint}' +
-                          '\t#{brewery.remote_endpoint_requires_date}'
+        Rails.logger.info "#{@tag}:: #{brewery.id}\t#{brewery.name}\t#{brewery.remote_schedule_endpoint}" +
+                          "\t#{brewery.remote_endpoint_requires_date}"
+      end
+
+      if brewery.is_restaurant
+        Rails.logger.info "#{@tag}:: skipping this brewery as it is a restaurant."
+        next
       end
 
       # Check to see if the food truck was updated manually
