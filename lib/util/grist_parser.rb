@@ -71,6 +71,7 @@ class GristParser < GenericParser
     unless food_truck_name.blank?
       notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
     else
+      brewery.update_attribute(:food_truck, nil)
       notifications.add_notification "Could not find a food truck name in #{food_truck_name} extract."
       Rails.logger.error "#{@tag}::No food truck found in schedule for #{brewery.name}!"
     end
@@ -86,6 +87,7 @@ class GristParser < GenericParser
     unless hours_string.blank?
       brewery.update_attribute(:event_hours, hours_string)
     else
+      brewery.update_attribute(:event_hours, nil)
       notifications.add_notification "Could not find hours in #{food_truck_schedule} extract."
       Rails.logger.error "#{@tag}:: No food truck hours found for #{brewery.name}"
     end

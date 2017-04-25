@@ -51,13 +51,29 @@ class LivingTheDreamParser < GenericParser
     # extract between ">.*</a"
     food_truck_name = food_truck_name.scan(/(?<=\">)(.*)(?=<\/a)/).last.first
 
-    # Returns updated notifications
-    notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
+    unless food_truck_name.blank?
+      notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
+    else
+      brewery.update_attribute(:food_truck, nil)
+      notifications.add_notification "Could not find a food truck name in #{brewery.name}'s schedule extract."
+      Rails.logger.error "#{@tag}::No food truck found in schedule for #{brewery.name}!"
+    end
 
-    # Get hours
+    #   0                         1  2  3  4    5
+    # <strong>4/6/2017</strong> 4:00 PM - 9:00 PM<br>
+    hours_string = String.new
     split_hours_string = food_truck_schedule.split
-    hours_string       = "#{split_hours_string[4]}-#{split_hours_string[6]}"
-    brewery.update_attribute(:event_hours, hours_string)
+    split_hours_string.tap do |s|
+      hours_string       = "#{split_hours_string[4]}-#{split_hours_string[6]}"
+    end
+
+    unless hours_string.blank?
+      brewery.update_attribute(:event_hours, hours_string)
+    else
+      brewery.update_attribute(:event_hours, nil)
+      notifications.add_notification "Could not find hours in #{food_truck_schedule} extract."
+      Rails.logger.error "#{@tag}:: No food truck hours found for #{brewery.name}"
+    end
 
     notifications
   end
