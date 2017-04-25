@@ -38,4 +38,23 @@ FactoryGirl.define do
     schedule_scan_pattern '\|\|*.+\|\|'
     schedule_gsub_pattern '\|\|M\/D\/YYYY\|\|'
   end
+
+  factory :thirty_eight_state, class: Brewery do
+    name "Thirty Eight State Brewing Company"
+    address_city "Littleton"
+    address_state "Colorado"
+    address_street "8071 S. Broadway, Unit A"
+    address_zip "80122"
+    description "A brewery that makes beer to put in your mouth."
+    email "info@38statebrew.com"
+    phone "(720) 638-3678"
+    website "http://38statebrew.com"
+    yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
+
+    remote_schedule_endpoint "http://38statebrew.com/wp-admin/admin-ajax.php?action=spiderbigcalendar_list&calendar=1&date=||YYYY-MM||"
+    remote_endpoint_requires_date true
+    schedule_scan_pattern '\|\|*.+\|\|'
+    schedule_gsub_pattern '\|\|YYYY-MM\|\|'
+  end
 end

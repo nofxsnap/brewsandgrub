@@ -20,10 +20,13 @@ class DatePatternGenerator
       if unformatted_date_substr =~ gsub_regex
         full_endpoint = brewery_endpoint.gsub(gsub_regex, date.strftime("%-m/%-d/%Y"))
       end
+    elsif brewery.name.downcase == "Thirty Eight State Brewing Company".downcase
+      if unformatted_date_substr =~ gsub_regex
+        full_endpoint = brewery_endpoint.gsub(gsub_regex, date.strftime("%Y-%m"))
+      end
     end
 
-    Rails.logger.info '#{tag}:: Determined this is what the endpoint should look like: #{endpoint}'
-
+    Rails.logger.info "#{@tag}:: Determined this is what the endpoint should look like: #{full_endpoint}"
     full_endpoint
   end
 
