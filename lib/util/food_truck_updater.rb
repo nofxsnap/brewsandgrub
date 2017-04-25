@@ -1,5 +1,7 @@
 class FoodTruckUpdater
 
+  @tag = "FoodTruckUpdater"
+
   def self.update_brewery_with_truck(brewery, food_truck_name)
       notifications = Notification.new
 
