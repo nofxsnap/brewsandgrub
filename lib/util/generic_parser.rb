@@ -12,12 +12,19 @@ class GenericParser
 
     # Read each line of the input file, putting the lines that have truckpattern in
     # the truck_name array and the lines that have the hourspattern in the truck_hours array
+
+    truck_regex = Regexp.new truckpattern
+
+    unless hourspattern.blank?
+      schedule_regex = Regexp.new hourspattern
+    end
+
     begin
       open(endpoint) { |lines|
         lines.each_line{ |line|
-          if line=~ /#{truckpattern}/
+          if line=~ truck_regex            
             truck_name << line
-          elsif line =~ /#{hourspattern}/
+          elsif !hourspattern.blank? && line =~ schedule_regex
             truck_hours << line
           end
         }
