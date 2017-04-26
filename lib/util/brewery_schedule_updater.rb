@@ -28,6 +28,8 @@ class BreweryScheduleUpdater
         notifications.add_notifications LivingTheDreamParser.get_food_truck_for_date(brewery, today)
       elsif brewery.name.downcase == 'Grist Brewing Company'.downcase
         notifications.add_notifications GristParser.get_food_truck_for_date(brewery, today)
+      elsif brewery.name.downcase == 'Thirty Eight State Brewing Company'.downcase
+        notifications.add_notifications ThirtyEightStateParser.get_food_truck_for_date(brewery, today)
       end
 
     end
