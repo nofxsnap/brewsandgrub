@@ -57,4 +57,23 @@ FactoryGirl.define do
     schedule_scan_pattern '\|\|*.+\|\|'
     schedule_gsub_pattern '\|\|YYYY-MM\|\|'
   end
+
+  factory :lone_tree, class: Brewery do
+    name "Lone Tree Brewing Company"
+    address_city "Lone Tree"
+    address_state "Colorado"
+    address_street "8200 Park Meadows Drive, Suite 8222"
+    address_zip "80124"
+    description "A brewery that makes beer to put in your mouth."
+    email "info@lonetreebrewing.com"
+    phone "(303) 792-5822"
+    website "http://lonetreebrewingco.com"
+    yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
+
+    remote_schedule_endpoint "http://lonetreebrewingco.com/events/today/"
+    remote_endpoint_requires_date false
+    schedule_scan_pattern nil
+    schedule_gsub_pattern nil
+  end
 end
