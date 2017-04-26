@@ -12,13 +12,15 @@ class ThirtyEightStateParser < GenericParser
   def self.get_food_truck_for_date(brewery, date)
     notifications = Notification.new
 
-    Rails.logger.info '#{@tag}:: starting get_todays_food_truck'
+    Rails.logger.info "#{@tag}:: starting get_todays_food_truck"
 
     # Get the schedule from the given endpoint
-    Rails.logger.info '#{@tag}:: endpoint for this brewery = #{endpoint}'
+    Rails.logger.info "#{@tag}:: endpoint for this brewery = #{brewery.remote_schedule_endpoint}"
 
     if brewery.remote_endpoint_requires_date
       endpoint = DatePatternGenerator.generate_date_string_for_brewery(brewery, date)
+    else
+      endpoint = brewery.remote_schedule_endpoint
     end
 
     if endpoint.blank?
@@ -49,8 +51,6 @@ class ThirtyEightStateParser < GenericParser
       food_truck_name = todays_schedule.first
     end
 
-    # <h1><a href="/events/2017/4/18/the-wing-wagon-grill">The Wing Wagon Grill</a></h1>
-    # extract between ">.*</a"
     #    <p>&nbsp;Donatella&#039;s Pizza Truck</b>
     #    <p>&nbsp;Saucy Buns BBQ</b>
     unless food_truck_name.blank?

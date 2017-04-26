@@ -9,13 +9,15 @@ class GristParser < GenericParser
   def self.get_food_truck_for_date(brewery, date)
     notifications = Notification.new
 
-    Rails.logger.info '#{@tag}::starting get_todays_food_truck'
+    Rails.logger.info "#{@tag}:: starting get_todays_food_truck"
 
-    endpoint = brewery.remote_schedule_endpoint
-    Rails.logger.info '#{@tag}:: endpoint for #{brewery.name} is #{endpoint}'
+    # Get the schedule from the given endpoint
+    Rails.logger.info "#{@tag}:: endpoint for this brewery = #{brewery.remote_schedule_endpoint}"
 
     if brewery.remote_endpoint_requires_date
       endpoint = DatePatternGenerator.generate_date_string_for_brewery(brewery, date)
+    else
+      endpoint = brewery.remote_schedule_endpoint
     end
 
     if endpoint.blank?

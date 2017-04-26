@@ -8,13 +8,15 @@ class LivingTheDreamParser < GenericParser
   def self.get_food_truck_for_date(brewery, date)
     notifications = Notification.new
 
-    Rails.logger.info '#{@tag}:: starting get_todays_food_truck'
+    Rails.logger.info "#{@tag}:: starting get_todays_food_truck"
 
     # Get the schedule from the given endpoint
-    Rails.logger.info '#{@tag}:: endpoint for this brewery = #{endpoint}'
+    Rails.logger.info "#{@tag}:: endpoint for this brewery = #{brewery.remote_schedule_endpoint}"
 
     if brewery.remote_endpoint_requires_date
       endpoint = DatePatternGenerator.generate_date_string_for_brewery(brewery, date)
+    else
+      endpoint = brewery.remote_schedule_endpoint
     end
 
     if endpoint.blank?
@@ -40,11 +42,11 @@ class LivingTheDreamParser < GenericParser
     # Sometimes the schedule has an event AND a food truck.
     if todays_schedule.size > 1
       # TODO:  need something better than 'generally the event is listed first'
-      food_truck_name = todays_schedule.last
-      food_truck_schedule = todays_scheduled_hours.last
+      food_truck_name = todays_schedule.last.strip
+      food_truck_schedule = todays_scheduled_hours.last.strip
     else
-      food_truck_name = todays_schedule.first
-      food_truck_schedule = todays_scheduled_hours.first
+      food_truck_name = todays_schedule.first.strip
+      food_truck_schedule = todays_scheduled_hours.first.strip
     end
 
     # <h1><a href="/events/2017/4/18/the-wing-wagon-grill">The Wing Wagon Grill</a></h1>
@@ -64,7 +66,7 @@ class LivingTheDreamParser < GenericParser
     hours_string = String.new
     split_hours_string = food_truck_schedule.split
     split_hours_string.tap do |s|
-      hours_string       = "#{split_hours_string[4]}-#{split_hours_string[6]}"
+      hours_string       = "#{s[4]}-#{s[6]}"
     end
 
     unless hours_string.blank?
