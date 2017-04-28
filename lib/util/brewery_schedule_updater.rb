@@ -23,15 +23,22 @@ class BreweryScheduleUpdater
       # Check to see if the food truck was updated manually
 
       # Send it to the thing based on the brewery name (custom things for each is lame)
+      case brewery.name.downcase
 
-      if brewery.name.downcase    == 'Living the Dream'.downcase
+      when 'Living the Dream'.downcase
         notifications.add_notifications LivingTheDreamParser.get_food_truck_for_date(brewery, today)
-      elsif brewery.name.downcase == 'Grist Brewing Company'.downcase
+      when 'Grist Brewing Company'.downcase
         notifications.add_notifications GristParser.get_food_truck_for_date(brewery, today)
-      elsif brewery.name.downcase == 'Thirty Eight State Brewing Company'.downcase
+      when 'Thirty Eight State Brewing Company'.downcase
         notifications.add_notifications ThirtyEightStateParser.get_food_truck_for_date(brewery, today)
-      elsif brewery.name.downcase == 'Lone Tree Brewing Company'.downcase
+      when 'Lone Tree Brewing Company'.downcase
         notifications.add_notifications LoneTreeParser.get_food_truck_for_date(brewery, today)
+      when 'Resolute Brewing Company'.downcase
+        notifications.add_notifications ResoluteParser.get_food_truck_for_date(brewery, today)
+      else
+        error = "No parser found for #{brewery.name}."
+        Rails.logger.error error
+        notifications.add_notification error
       end
 
     end
