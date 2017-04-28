@@ -76,4 +76,24 @@ FactoryGirl.define do
     schedule_scan_pattern nil
     schedule_gsub_pattern nil
   end
+
+  factory :resolute, class: Brewery do
+    name "Resolute Brewing Company"
+    address_city "Centennial"
+    address_state "Colorado"
+    address_street "7286 S. Yosemite St. #110"
+    address_zip "80112"
+    description "Community, Craft, Culture"
+    email "cheers@resolutebrewingco.com"
+    phone "(720) 722-1238"
+    website "http://resolutebrewingco.com"
+    yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
+
+    remote_schedule_endpoint "http://resolutebrewingco.com/event-calendar/"
+    remote_endpoint_requires_date false
+    schedule_scan_pattern nil
+    schedule_gsub_pattern nil
+  end
+
 end
