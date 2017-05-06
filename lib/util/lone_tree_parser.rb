@@ -39,6 +39,8 @@ class LoneTreeParser < GenericParser
 
     notifications, todays_schedule, todays_scheduled_hours = fetch_remote_schedule(endpoint, food_truck_pattern, food_truck_hours_pattern, notifications)
 
+    binding.pry
+
     # Sometimes the schedule has an event AND a food truck.
     if todays_schedule.size > 1
       # TODO:  need something better than 'generally the event is listed first'
@@ -71,6 +73,7 @@ class LoneTreeParser < GenericParser
 
     #    0    1 2  3    4 5  6   7
     # "April 26 @ 4:00 pm - 8:00 pm"
+    binding.pry
     split_hours_string = food_truck_schedule.split
     split_hours_string.tap do |s|
       hours_string       = "#{s[3]}#{s[4]}-#{s[6]}#{s[7]}"

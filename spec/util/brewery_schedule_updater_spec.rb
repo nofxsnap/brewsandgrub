@@ -5,7 +5,7 @@ RSpec.describe BreweryScheduleUpdater do
   SPEC_BREWERY_LONG_EVENT_HOURS = "1:00pm-8:00pm"
 
   before(:all) do
-    @brewery = create(:living_the_dream)
+    @living_the_dream = create(:living_the_dream)
     @food_truck = create(:taco_town_truck)
   end
 
@@ -18,16 +18,16 @@ RSpec.describe BreweryScheduleUpdater do
     it "should get existing food truck for the given day" do
       today = Date.new(2017,4,19)
 
-      @brewery.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd?view=calendar&month=||MONTH-YYYY||")
+      @living_the_dream.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd?view=calendar&month=||MONTH-YYYY||")
 
       @notifications.add_notifications BreweryScheduleUpdater.update_all_breweries(today)
 
-      @brewery.reload
+      @living_the_dream.reload
       @food_truck.reload
 
       expect(@notifications.size).to eq(0)
-      expect(@brewery.food_truck).to eq(@food_truck)
-      expect(@brewery.event_hours).to eq(SPEC_BREWERY_EVENT_HOURS)
+      expect(@living_the_dream.food_truck).to eq(@food_truck)
+      expect(@living_the_dream.event_hours).to eq(SPEC_BREWERY_EVENT_HOURS)
     end
 
     it "should get a new food truck for the given day" do
@@ -35,15 +35,55 @@ RSpec.describe BreweryScheduleUpdater do
 
       @notifications.add_notifications BreweryScheduleUpdater.update_all_breweries(today)
 
-      @brewery.reload
+      @living_the_dream.reload
 
       new_food_truck = FoodTruck.order("created_at").last
 
       expect(@notifications.size).to eq(1)
-      expect(@brewery.food_truck).to eq(new_food_truck)
-      expect(@brewery.event_hours).to eq(SPEC_BREWERY_LONG_EVENT_HOURS)
+      expect(@living_the_dream.food_truck).to eq(new_food_truck)
+      expect(@living_the_dream.event_hours).to eq(SPEC_BREWERY_LONG_EVENT_HOURS)
+    end
+
+    it 'should get all food trucks for all breweries for the given day' do
+      today = Date.new(2017,4,26)
+      @resolute         = create(:resolute)
+      @lone_tree        = create(:lone_tree)
+      @thirty_eight     = create(:thirty_eight_state)
+      @grist            = create(:grist)
+
+      # Update required endpoints to refer to the local file for testing purposes
+      @living_the_dream.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/ltd?view=calendar&month=||MONTH-YYYY||")
+      @resolute.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/resolute.html")
+      @thirty_eight.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/thirty8st=||YYYY-MM||")
+      @lone_tree.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/lonetree.html")
+
+      # grist?
+
+      @notifications.add_notifications BreweryScheduleUpdater.update_all_breweries(today)
+
+      binding.pry
+
+      expect(@notifications.size).to eq(5) # One notifiaction for each new food truck
+      @notifications.each do |n|
+        expect(n).to start_with("New Food Truck")
+      end
+
+      @lone_tree.reload!
+      expect(@lone_tree.food_truck).not_to be(nil)
+      expect(@lone_tree).food_truck.name).to eq ("Denver 808/Ohana Denver")
+
+      @resolute.reload!
+      expect(@resolute.food_truck).not_to be(nil)
+      expect(@resolute.food_truck.name).to eq ("Ol' Skool Que")
+
+      @grist.reload!
+      expect(@grist.food_truck).not_to be(nil)
+      expect(@grist.food_truck_name).to eq ("")
+
     end
   end
+
+
 
   after(:all) do
     FoodTruck.all.each { |x| x.destroy! }

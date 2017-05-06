@@ -22,9 +22,9 @@ class GenericParser
     begin
       open(endpoint) { |lines|
         lines.each_line{ |line|
-          if line=~ truck_regex            
+          if line=~ truck_regex
             truck_name << line
-          elsif !hourspattern.blank? && line =~ schedule_regex
+          elsif !hourspattern.blank? && line =~ schedule_regex            
             truck_hours << line
           end
         }
