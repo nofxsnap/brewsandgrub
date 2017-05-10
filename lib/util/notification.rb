@@ -41,4 +41,13 @@ class Notification
     end
   end
 
+  def print_notifications(tag)
+    unless @notification_list.empty?
+      Rails.logger.info "#{tag}:: Got the following notifications when attempting to aggregate data:"
+      @notification_list.each_with_index do |n, index|
+        Rails.logger.info "#{tag}:: (#{index}\t#{n})"
+      end
+    end
+  end
+
 end
