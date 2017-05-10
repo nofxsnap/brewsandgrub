@@ -1,5 +1,5 @@
 # This should be called nightly to update brewery/food truck pairings
-task :update_brewery_with_food_truck
+task :update_brewery_with_food_truck => :environment do |t, args|
   start_time = Time.now.utc
 
   today = Date.today
