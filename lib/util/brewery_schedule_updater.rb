@@ -20,7 +20,11 @@ class BreweryScheduleUpdater
         next
       end
 
-      # Check to see if the food truck was updated manually
+      # Start a stopwatch to time each update so we can track latency in each
+      # call to scrape the schedule
+      start_time = Time.now.utc
+
+      # TODO: Check to see if the food truck was updated manually
 
       # Send it to the thing based on the brewery name (custom things for each is lame)
       case brewery.name.downcase
@@ -41,10 +45,20 @@ class BreweryScheduleUpdater
         notifications.add_notification error
       end
 
+      end_time = Time.now.utc
+
+      elapsed_time_in_ms = (end_time-start_time) * 1000
+      Rails.logger.info "#{@tag}:: (PERF) #{brewery.name} update in #{elapsed_time_in_ms}ms"
+      if (elapsed_time_in_ms > 5000)
+        Rails.logger.info "#{@tag}:: (PERF) WARNING: #{brewery.name} took a ridiculously long time to update."
+      end
     end
 
-    notifications
+    Rails.logger.info "#{@tag}:: job complete."
 
+    # At this point the job is done, we should have all potential brewery=>food_truck
+    # relationships set up.
+    notifications.print_notifications(@tag)
   end
 
 end
