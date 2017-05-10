@@ -57,36 +57,39 @@ RSpec.describe BreweryScheduleUpdater do
       @thirty_eight.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/thirty8st=||YYYY-MM||")
       @lone_tree.update_attribute(:remote_schedule_endpoint, "#{Rails.root}/spec/util/dataz/lonetree.html")
 
-      # grist?
+      # grist is still a live pull, dangit
 
       @notifications.add_notifications BreweryScheduleUpdater.update_all_breweries(today)
 
-      binding.pry
-
       expect(@notifications.size).to eq(5) # One notifiaction for each new food truck
-      @notifications.each do |n|
+      @notifications.get_notifications.each do |n|
         expect(n).to start_with("New Food Truck")
       end
 
-      @lone_tree.reload!
+      @lone_tree.reload
       expect(@lone_tree.food_truck).not_to be(nil)
-      expect(@lone_tree).food_truck.name).to eq ("Denver 808/Ohana Denver")
+      expect(@lone_tree.food_truck.name).to eq ("Denver 808/Ohana Denver")
 
-      @resolute.reload!
+      @resolute.reload
       expect(@resolute.food_truck).not_to be(nil)
       expect(@resolute.food_truck.name).to eq ("Ol' Skool Que")
 
-      @grist.reload!
+      @grist.reload
       expect(@grist.food_truck).not_to be(nil)
-      expect(@grist.food_truck_name).to eq ("")
+      expect(@grist.food_truck.name).to eq ("Mile High Cajun")
 
+      @thirty_eight.reload
+      expect(@thirty_eight.food_truck).not_to be(nil)
+      expect(@thirty_eight.food_truck.name).to eq("Saucy Buns BBQ")
+
+      @living_the_dream.reload
+      expect(@living_the_dream.food_truck).not_to be(nil)
+      expect(@living_the_dream.food_truck.name).to eq("Go'n South")
     end
   end
 
-
-
   after(:all) do
     FoodTruck.all.each { |x| x.destroy! }
-    @brewery.destroy!
+    Brewery.all.each { |b| b.destroy! }
   end
 end
