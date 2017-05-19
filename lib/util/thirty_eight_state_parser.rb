@@ -33,8 +33,7 @@ class ThirtyEightStateParser < GenericParser
 
     # Go get the thing
     # The pattern we're looking for is today:
-    food_truck_pattern = "38statebrew.*spidercalendarbig.*date=#{date.strftime("%Y-%m-%-d")}&"
-    puts "\n\n#{food_truck_pattern}\n\n"
+    food_truck_pattern = "38statebrew.*spidercalendarbig.*date=#{date.strftime("%Y-%m-%-d")}&"  
 
     # Tuesday, April 18, 2017,  4:00pm &ndash;  8:00pm
     # food_truck_hours_pattern = "#{date.strftime("%A, %B %-d, %Y,")}"
