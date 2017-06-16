@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310181805) do
+ActiveRecord::Schema.define(version: 20170425170815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,8 +29,14 @@ ActiveRecord::Schema.define(version: 20170310181805) do
     t.string   "logo"
     t.string   "yelp_url"
     t.text     "description"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "remote_schedule_endpoint"
+    t.boolean  "remote_endpoint_requires_date"
+    t.string   "event_hours"
+    t.string   "schedule_scan_pattern"
+    t.string   "schedule_gsub_pattern"
+    t.boolean  "is_restaurant"
     t.index ["contact_id"], name: "index_breweries_on_contact_id", using: :btree
     t.index ["menu_id"], name: "index_breweries_on_menu_id", using: :btree
   end
@@ -66,6 +72,8 @@ ActiveRecord::Schema.define(version: 20170310181805) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "brewery_id"
+    t.index ["brewery_id"], name: "index_food_trucks_on_brewery_id", using: :btree
     t.index ["contact_id"], name: "index_food_trucks_on_contact_id", using: :btree
     t.index ["menu_id"], name: "index_food_trucks_on_menu_id", using: :btree
   end
@@ -103,6 +111,7 @@ ActiveRecord::Schema.define(version: 20170310181805) do
   add_foreign_key "breweries", "menus"
   add_foreign_key "food_truck_calendars", "breweries"
   add_foreign_key "food_truck_calendars", "food_trucks"
+  add_foreign_key "food_trucks", "breweries"
   add_foreign_key "food_trucks", "contacts"
   add_foreign_key "food_trucks", "menus"
   add_foreign_key "menu_items", "menus"

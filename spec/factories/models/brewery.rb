@@ -1,0 +1,99 @@
+# Factory girl instance for breweries
+FactoryGirl.define do
+  factory :living_the_dream, class: Brewery do
+    name "Living the Dream"
+    address_city "Littleton"
+    address_state "Colorado"
+    address_street "12305 Dumont Way, Unit A"
+    address_zip "80125"
+    description "We are a dog friendly brewery & taproom located in Highlands Ranch, Colorado."
+    email "info@livingthedreambrewing.com"
+    phone "(303) 284-9585"
+    website "http://livingthedreambrewing.com"
+    yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
+
+    remote_schedule_endpoint "http://livingthedreambrewing.com/events/?view=calendar&month=||MONTH-YYYY||"
+    remote_endpoint_requires_date true
+    schedule_scan_pattern '\|\|*.+\|\|'
+    schedule_gsub_pattern '\|\|MONTH-YYYY\|\|'
+  end
+
+  factory :grist, class: Brewery do
+    name "Grist Brewing Company"
+    address_city "Highlands Ranch"
+    address_state "Colorado"
+    address_street "9150 Commerce Center Circle"
+    address_zip "80129"
+    description "Science balanced with creativity!"
+    email "info@gristbrewingcompany.com"
+    phone "(720) 360-4782"
+    website "http://www.gristbrewingcompany.com"
+    yelp_url "http://wtfyelpwhy.cn"
+    is_restaurant false
+
+    remote_schedule_endpoint "https://www.gristbrewingcompany.com/events/?date=||M/D/YYYY||"
+    remote_endpoint_requires_date true
+
+    schedule_scan_pattern '\|\|*.+\|\|'
+    schedule_gsub_pattern '\|\|M\/D\/YYYY\|\|'
+  end
+
+  factory :thirty_eight_state, class: Brewery do
+    name "Thirty Eight State Brewing Company"
+    address_city "Littleton"
+    address_state "Colorado"
+    address_street "8071 S. Broadway, Unit A"
+    address_zip "80122"
+    description "A brewery that makes beer to put in your mouth."
+    email "info@38statebrew.com"
+    phone "(720) 638-3678"
+    website "http://38statebrew.com"
+    yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
+
+    remote_schedule_endpoint "http://38statebrew.com/wp-admin/admin-ajax.php?action=spiderbigcalendar_list&calendar=1&date=||YYYY-MM||"
+    remote_endpoint_requires_date true
+    schedule_scan_pattern '\|\|*.+\|\|'
+    schedule_gsub_pattern '\|\|YYYY-MM\|\|'
+  end
+
+  factory :lone_tree, class: Brewery do
+    name "Lone Tree Brewing Company"
+    address_city "Lone Tree"
+    address_state "Colorado"
+    address_street "8200 Park Meadows Drive, Suite 8222"
+    address_zip "80124"
+    description "A brewery that makes beer to put in your mouth."
+    email "info@lonetreebrewing.com"
+    phone "(303) 792-5822"
+    website "http://lonetreebrewingco.com"
+    yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
+
+    remote_schedule_endpoint "http://lonetreebrewingco.com/events/today/"
+    remote_endpoint_requires_date false
+    schedule_scan_pattern nil
+    schedule_gsub_pattern nil
+  end
+
+  factory :resolute, class: Brewery do
+    name "Resolute Brewing Company"
+    address_city "Centennial"
+    address_state "Colorado"
+    address_street "7286 S. Yosemite St. #110"
+    address_zip "80112"
+    description "Community, Craft, Culture"
+    email "cheers@resolutebrewingco.com"
+    phone "(720) 722-1238"
+    website "http://resolutebrewingco.com"
+    yelp_url "http://whydopeopleuseyelp.com"
+    is_restaurant false
+
+    remote_schedule_endpoint "http://resolutebrewingco.com/event-calendar/"
+    remote_endpoint_requires_date false
+    schedule_scan_pattern nil
+    schedule_gsub_pattern nil
+  end
+
+end

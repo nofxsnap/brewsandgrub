@@ -14,6 +14,8 @@ gem 'puma', '~> 3.0'
 gem 'pg'
 gem 'money-rails'
 
+gem 'rails-html-sanitizer'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -44,6 +46,8 @@ group :development, :test do
   gem 'foreman', '~> 0.82.0'
 
   gem 'rails-erd'
+
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -51,6 +55,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'database_cleaner'
 end
 
 group :production, :staging do
