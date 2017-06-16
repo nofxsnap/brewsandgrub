@@ -39,19 +39,33 @@ class LoneTreeParser < GenericParser
 
     notifications, todays_schedule, todays_scheduled_hours = fetch_remote_schedule(endpoint, food_truck_pattern, food_truck_hours_pattern, notifications)
 
+
     # Sometimes the schedule has an event AND a food truck.
-    if todays_schedule.size > 1
-      # TODO:  need something better than 'generally the event is listed first'
-      food_truck_name = todays_schedule.last
-      food_truck_schedule = todays_scheduled_hours.last
+    unless todays_schedule.blank?
+      if todays_schedule.size > 1
+        # TODO:  need something better than 'generally the event is listed first'
+        food_truck_name = todays_schedule.last
+        food_truck_schedule = todays_scheduled_hours.last
+      else
+        food_truck_name = todays_schedule.first
+        food_truck_schedule = todays_scheduled_hours.first
+      end
     else
-      food_truck_name = todays_schedule.first
-      food_truck_schedule = todays_scheduled_hours.first
+      # We didn't get a schedule, so there probably isn't a food truck
+      brewery.update_attribute(:food_truck, nil)
+      notifications.add_notification "Unreadable food truck response for today: #{Date.today}"
+      return notifications
     end
 
     # Food Truck: Denver 808/Ohana Denver	</a>
     # strip extra leading whitespace, chomp off the </a>
-    food_truck_name = food_truck_name.scan(/(?<=:)(.*)(?=<\/a)/).last.first.strip
+    begin
+      food_truck_name = food_truck_name.scan(/(?<=:)(.*)(?=<\/a)/).last.first.strip
+    rescue Exception => ex
+      notifications.add_notification "Couldn't parse food truck name out of return for #{brewery.name}"
+      brewery.update_attribute(:food_truck, nil)
+      return notifications
+    end
 
     unless food_truck_name.blank?
       notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
@@ -70,7 +84,7 @@ class LoneTreeParser < GenericParser
     food_truck_schedule = full_sanitizer.sanitize(food_truck_schedule)
 
     #    0    1 2  3    4 5  6   7
-    # "April 26 @ 4:00 pm - 8:00 pm"    
+    # "April 26 @ 4:00 pm - 8:00 pm"
     split_hours_string = food_truck_schedule.split
     split_hours_string.tap do |s|
       hours_string       = "#{s[3]}#{s[4]}-#{s[6]}#{s[7]}"

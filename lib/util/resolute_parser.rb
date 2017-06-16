@@ -36,8 +36,14 @@ class ResoluteParser #
     food_truck_name = full_sanitizer.sanitize(food_truck_name)
 
     # Food truck name:  🚚 - Burger Chief
-    food_truck_name = food_truck_name.split(/-/).last.strip
-
+    begin
+      food_truck_name = food_truck_name.split(/-/).last.strip
+    rescue Exception => ex
+      notifications.add_notification "Couldn't parse food truck name out of return for #{brewery.name}"
+      brewery.update_attribute(:food_truck, nil)
+      return notifications
+    end
+    
     unless food_truck_name.blank?
       notifications = FoodTruckUpdater.update_brewery_with_truck(brewery, food_truck_name)
     else
